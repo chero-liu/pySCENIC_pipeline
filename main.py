@@ -4,7 +4,7 @@
 pySCENIC Pipeline - Regulatory Network Analysis for Single-cell Data
 ---------------------------------------------------------------
 Author: Chenglong Liu
-Contact: chenglong.liu@oebiotech.com
+Contact: njlcl@outlook.com
 Created: 2025-02
 """
 
