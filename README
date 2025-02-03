@@ -1,0 +1,85 @@
+# pySCENIC Pipeline 使用说明
+
+本流程用于单细胞数据的基因调控网络分析，包含数据准备、网络推断与富集分析、结果可视化三个阶段。
+
+---
+
+## 快速开始
+
+```bash
+source /gpfs/oe-scrna/liuchenglong/anaconda3/bin/activate /gpfs/oe-scrna/liuchenglong/envs/pyscenic
+python main.py \
+    --input /path/to/input.rds \
+    --outdir /path/to/outdir \
+    --species human
+
+参数详解
+
+数据准备参数
+参数	必选	默认值	说明
+--input	是	无	输入RDS文件路径（单细胞数据）
+--outdir	是	无	输出目录路径
+--species	是	human	物种，可选 human 或 mouse
+--subsampleid	否	"no"	子样本ID过滤条件
+--subgroup	否	"no"	亚组过滤条件
+--subcluster	否	"no"	亚群过滤条件
+--subnew_celltype	否	"no"	新细胞类型过滤条件
+--predicate	否	"no"	自定义过滤谓词
+网络分析参数
+参数	必选	默认值	说明
+--method	否	grnboost2	GRN推断方法，可选 grnboost2 或 genie3
+--database	否	/gpfs/oe-scrna/.../data	数据库目录路径
+--tfs	否	allTFs.txt	转录因子列表文件名
+--genes_vs_motifs	否	auto	基因-Motif排名文件。若为 auto，将根据物种自动选择：
+- human: 500bp_up_100bp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather
+- mouse: 500bp-upstream-7species.mc9nr.genes_vs_motifs.rankings.feather
+--motifs_tbl	否	motifs-v10nr_clust-nr-m0.001-o0.0.tbl	Motif注释表文件名
+--rank_threshold	否	5000	基因排名阈值（保留前N个基因）
+--auc_threshold	否	0.05	AUC计算阈值（前5%基因参与评分）
+--nes_threshold	否	3.0	Motif富集的NES显著性阈值
+--min_orthologous_identity	否	0.0	Motif注释的最小同源序列一致性
+--max_similarity_fdr	否	0.001	Motif相似性分析的FDR阈值
+--chunk_size	否	100	模块分块大小（优化计算效率）
+--thresholds	否	0.75 0.90	相关系数阈值（空格分隔，用于模块生成）
+--top_n_targets	否	5 10 50	每个TF的Top靶标数量（空格分隔）
+--min_genes	否	20	Regulon的最小基因数（低于此值将被过滤）
+--all_modules	否	False	是否包含正负调控模块（True/False）
+可视化参数
+参数	必选	默认值	说明
+--binmethod	否	aucell	分箱方法（如 aucell）
+--groupby	否	clusters	分组依据（如细胞类型、聚类）
+--threshold	否	0.0	AUC阈值（过滤低活性Regulon）
+--topGenes	否	4	可视化中展示的Top基因数
+--extended	否	FALSE	是否生成扩展可视化结果
+--nclust	否	4	聚类数量
+
+
+outdir/
+├── data/            # 数据分析
+│   ├── counts.csv
+│   ├── expr_mat.adjacencies.tsv
+│   ├── for_scenic.loom
+│   ├── regulons.csv
+│   ├── sce_SCENIC.loom
+└── result/          # 可视化结果
+│   ├── 1.1.regulon_activity_heatmap_groupby_cells.pdf
+│   ├── 1.1.regulon_activity_heatmap_groupby_cells.png
+│   ├── 1.2.centered_regulon_activity_groupby_design.xls
+│   ├── 1.3.regulon_activity_heatmap.pdf
+│   ├── 1.3.regulon_activity_heatmap.png
+│   ├── 2.1.regulon_RSS_annotations.xls
+│   ├── 2.2.RSS_ranking_plot.pdf
+│   ├── 2.2.RSS_ranking_plot.png
+│   ├── 2.3.RSS_heatmap.pdf
+│   ├── 2.3.RSS_heatmap.png
+│   ├── 2.3.RSS_heatmap.xls
+│   ├── 3.1.csi_module_annotation.xls
+│   ├── 3.2.regulons_csi_correlation_heatmap.pdf
+│   ├── 3.2.regulons_csi_correlation_heatmap.png
+│   ├── 3.3.csi_module_activity_heatmap.pdf
+│   ├── 3.3.csi_module_activity_heatmap.png
+│   ├── Regulon调控子分析说明.docx
+└── script/          # 分析相关脚本
+│   ├── analysis.sh
+│   ├── datapreparation.sh
+└──  ── visualize.sh

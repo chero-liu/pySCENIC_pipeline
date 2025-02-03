@@ -1,0 +1,1 @@
+pyScenicNetPlot -r "/SGRNJ03/PiplineTest01/Software_test/liuchenglong/netfunc/scenic_regulons_importance.tsv" -t Stat1,Stat2,Zmiz1,Zxdc,Klf2,Mga --highGene Trim26,Cd74,Plp1 -o /SGRNJ03/PiplineTest01/Software_test/liuchenglong/pyscenicNetplot/test/ -p test
