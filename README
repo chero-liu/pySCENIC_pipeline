@@ -7,7 +7,7 @@
 ## 快速开始
 
 ```bash
-source /gpfs/oe-scrna/liuchenglong/anaconda3/bin/activate /gpfs/oe-scrna/liuchenglong/envs/pyscenic
+source activate pyscenic
 python main.py \
     --input /path/to/input.rds \
     --outdir /path/to/outdir \
